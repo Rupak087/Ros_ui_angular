@@ -1,0 +1,94 @@
+<div class="container">
+  <!-- Attendence Heading, Tab and Filters -->
+  <div class="row d-flex justify-content-between">
+    <div class="left d-flex">
+      <h4 class="mr-5">Attendence</h4>
+    </div>
+    <div class="right d-flex align-items-start">
+      <select
+        class="btn btn-sm bg-dark text-white mr-3 DWButton"
+        (change)="changeView($event)"
+      >
+        <option value="D" selected>DAILY</option>
+        <option value="W">WEEKLY</option>
+      </select>
+
+      <ngx-month-navigator
+        [state]="view"
+        (dateChange)="changeDate($event)"
+      ></ngx-month-navigator>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="view === 'D'">
+    <ag-grid-angular
+      style="width: 100%"
+      class="ag-theme-alpine"
+      domLayout="autoHeight"
+      [rowData]="dispAttendance"
+      [suppressRowClickSelection]="true"
+      [paginationPageSize]="10"
+      [pagination]="true"
+      [defaultColDef]="defaultColDef"
+      [rowSelection]="rowSelection"
+      [columnDefs]="columnDefs"
+      [gridOptions]="gridOptions"
+      (gridReady)="onGridReady($event)"
+    >
+    </ag-grid-angular>
+  </div>
+
+  <div class="row" *ngIf="view === 'W'">
+    <ng-template
+      #headerTemplate
+      let-days="days"
+      let-locale="locale"
+      let-dayClicked="dayClicked"
+      let-eventDropped="eventDropped"
+    >
+      <div class="cal-day-headers cursor-default">
+        <div class="cal-header" *ngFor="let day of days; let i = index">
+          <div
+            class="top cursor-pointer"
+            [class.today]="day.isToday"
+            [class.active]="checkDate(day.date)"
+            (click)="toggleTab($event, day)"
+          >
+            <div class="day-number">
+              {{
+                day.date
+                  | calendarDate: "weekViewColumnSubHeader":locale:weekStartsOn
+              }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+    <div class="mycomponent">
+      <mwl-calendar-week-view
+        [viewDate]="viewDate"
+        [headerTemplate]="headerTemplate"
+        weekStartsOn="1"
+      >
+      </mwl-calendar-week-view>
+    </div>
+  </div>
+
+  <div class="row mt-5" *ngIf="view === 'W'">
+    <ag-grid-angular
+      style="width: 100%"
+      class="ag-theme-alpine"
+      domLayout="autoHeight"
+      [rowData]="dispAttendance"
+      [suppressRowClickSelection]="true"
+      [paginationPageSize]="10"
+      [pagination]="true"
+      [defaultColDef]="defaultColDef"
+      [rowSelection]="rowSelection"
+      [columnDefs]="columnDefs"
+      [gridOptions]="gridOptions"
+      (gridReady)="onGridReady($event)"
+    >
+    </ag-grid-angular>
+  </div>
+</div>

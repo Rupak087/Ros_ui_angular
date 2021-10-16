@@ -1,0 +1,23 @@
+<ngx-one-column-layout>
+  <ngx-sidebar
+    *ngIf="
+      !(
+
+      
+        router.url == '/ROS/login' ||
+
+        router.url == '/ROS/cash-management/cash-up/new-cashup' ||
+        router.url == '/ROS/cash-management/cash-up/edit-cashup' ||
+        router.url == '/ROS/emp-management/employees/add-employee' ||
+        router.url == '/ROS/emp-management/employees/edit-employee' ||
+        router.url == '/ROS/emp-management/shift-calendar/shift-schedular' ||
+
+        router.url == '/ROS/register' ||
+        includesEditURL(router.url) ||
+        includesViewURL(router.url)
+      )
+    "
+  ></ngx-sidebar>
+
+  <router-outlet></router-outlet>
+</ngx-one-column-layout>
